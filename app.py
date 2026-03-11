@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Lista en memoria para almacenar tareas
 tasks = []
@@ -55,6 +57,10 @@ def delete_task(task_id):
         return jsonify({'error': 'Task not found'}), 404
     tasks = [t for t in tasks if t['id'] != task_id]
     return jsonify({'message': 'Task deleted'})
+
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
